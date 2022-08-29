@@ -69,6 +69,14 @@ app.use(express.json())
 //     }
 
 // })
+app.get('/', (req, res) => {
+    const objToSend = {
+        name: "VISHESH",
+        email: "Good@gmail.com"
+    }
+    res.status(200).send(JSON.stringify(objToSend))
+    console.log('good')
+})
 app.get('/checkconnection', (req, res) => {
     const objToSend = {
         name: "Manan",
@@ -91,6 +99,8 @@ app.post('/patient/qrcode', (req, res) => {
     })
 })
 
-app.listen(3000, () => {
-    console.log("Listening on port 3000...")
-})
+
+app.listen(process.env.PORT || 5000, () => {
+    const port = server.address().port;
+    console.log(`Express is working on port ${port}`);
+});
