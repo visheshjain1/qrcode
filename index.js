@@ -1,74 +1,152 @@
 const express = require('express')
 const app = express()
 const qrcode = require('qrcode')
+
+
+
+
+
+const LoginPasswords = [
+    {
+        userName: "Patient",
+        password: "Patient@123",
+        type: "Patient",
+        id: "1"
+    },
+    {
+        userName: "Doctor",
+        password: "Doctor@123",
+        type: "Doctor",
+        id: "4"
+    },
+    {
+        userName: "Pharma",
+        password: "Pharma@123",
+        type: "Pharma",
+        id: "7"
+    }
+]
+
+const basicDetails = [
+    {
+        id: "1",
+        name: "Ram",
+        age: "22",
+        phone: "8989090990",
+        gender: "Male",
+        type: "Patient"
+    },
+    {
+        id: "2",
+        name: "John",
+        age: "21",
+        phone: "8111111111",
+        gender: "Male",
+        type: "Patient"
+    },
+    {
+        id: "3",
+        name: "Jess",
+        age: "20",
+        phone: "898911111",
+        gender: "Female",
+        type: "Patient"
+    },
+    {
+        id: "4",
+        name: "DoctorRam",
+        age: "22",
+        phone: "8989090990",
+        gender: "Male",
+        type: "Doctor"
+    },
+    {
+        id: "5",
+        name: "DoctorJohn",
+        age: "21",
+        phone: "8111111111",
+        gender: "Male",
+        type: "Doctor"
+    },
+    {
+        id: "6",
+        name: "DoctorJess",
+        age: "20",
+        phone: "898911111",
+        gender: "Female",
+        type: "Doctor"
+    },
+    {
+        id: "7",
+        name: "PharmaJess",
+        age: "20",
+        phone: "898911111",
+        gender: "Female",
+        type: "Pharma"
+    }
+]
+
+
+
+const prescriptionHistory = [
+    {
+        id: "1",
+        doctorId: "4",
+        patientId: "1",
+        medicineName: "Crocin",
+        timing: ["11AM", "7PM"],
+        numberOfDays: "2",
+        startDate: "22-08-2022"
+
+    },
+    {
+        id: "1",
+        doctorId: "4",
+        patientId: "1",
+        medicineName: "Crocin",
+        timing: ["11AM", "7PM"],
+        numberOfDays: "3",
+        startDate: "22-08-2022"
+    },
+    {
+        id: "1",
+        doctorId: "4",
+        patientId: "1",
+        medicineName: "Crocin",
+        timing: ["11AM", "7PM"],
+        numberOfDays: "2",
+        startDate: "22-08-2022"
+    }
+]
+
+const appointments = [
+    {
+        id: "1",
+        patientId: "1",
+        doctorId: "4",
+        time: "4PM"
+    },
+    {
+        id: "1",
+        patientId: "2",
+        doctorId: "5",
+        time: "5PM"
+    },
+    {
+        id: "1",
+        patientId: "3",
+        doctorId: "6",
+        time: "6PM"
+    }
+]
+
 // const mongoClient = require('mongodb').MongoClient
 
 // const url = "mongodb://localhost:27017"
 
 app.use(express.json())
 
-// mongoClient.connect(url, (err, db) => {
 
-//     if (err) {
-//         console.log("Error while connecting mongo client")
-//     } else {
-
-//         const myDb = db.db('myDb')
-//         const collection = myDb.collection('myTable')
-
-//         app.post('/signup', (req, res) => {
-
-//             const newUser = {
-//                 name: req.body.name,
-//                 email: req.body.email,
-//                 password: req.body.password
-//             }
-
-//             const query = { email: newUser.email }
-
-//             collection.findOne(query, (err, result) => {
-
-//                 if (result == null) {
-//                     collection.insertOne(newUser, (err, result) => {
-//                         res.status(200).send()
-//                     })
-//                 } else {
-//                     res.status(400).send()
-//                 }
-
-//             })
-
-//         })
-
-//         app.post('/login', (req, res) => {
-
-//             const query = {
-//                 email: req.body.email, 
-//                 password: req.body.password
-//             }
-
-//             collection.findOne(query, (err, result) => {
-
-//                 if (result != null) {
-
-//                     const objToSend = {
-//                         name: result.name,
-//                         email: result.email
-//                     }
-
-//                     res.status(200).send(JSON.stringify(objToSend))
-
-//                 } else {
-//                     res.status(404).send()
-//                 }
-
-//             })
-
-//         })
-
-//     }
-
-// })
 app.get('/', (req, res) => {
     const objToSend = {
         name: "VISHESH",
@@ -77,14 +155,79 @@ app.get('/', (req, res) => {
     res.status(200).send(JSON.stringify(objToSend))
     console.log('good')
 })
-app.get('/checkconnection', (req, res) => {
+//Appointments
+app.get('/appointment', (req, res) => {
+    const patientId = req.query.patientId;
+    console.log(req.query)
     const objToSend = {
-        name: "Manan",
-        email: "Good@gmail.com"
+        prescriptions: []
     }
+    prescriptionHistory.forEach(element => {
+        if (element.patientId == patientId) {
+            objToSend.prescriptions.push(element)
+        }
+    })
     res.status(200).send(JSON.stringify(objToSend))
-    console.log('good')
+
 })
+
+//PatientDetails
+app.get('/basicdetails', (req, res) => {
+    const id = req.query.id;
+    console.log(req.query)
+    basicDetails.forEach(element => {
+        if (element.id == id) {
+            res.status(200).send(JSON.stringify(element))
+        }
+    })
+    const mess = {
+        message: "No User Found"
+    }
+    res.status(500).send(JSON.stringify(mess));
+
+})
+
+app.get('/medications', (req, res) => {
+    const patientId = req.query.patientId;
+    console.log(req.query)
+    const objToSend = {
+        prescriptions: []
+    }
+    prescriptionHistory.forEach(element => {
+        if (element.patientId == patientId) {
+            objToSend.prescriptions.push(element)
+        }
+    })
+    res.status(200).send(JSON.stringify(objToSend))
+
+
+})
+
+//login
+
+app.post('/login', (req, res) => {
+    const userName = req.body.userName;
+    const password = req.body.password;
+
+    LoginPasswords.forEach(element => {
+        if (element.userName == userName && element.password == password) {
+            const objToSend = {
+                type: element.type,
+                id: element.id
+            }
+            res.status(200).send(JSON.stringify(objToSend))
+        }
+    })
+
+
+    const mess = {
+        message: "Wrong Credentials"
+    }
+    res.status(500).send(JSON.stringify(mess));
+
+
+})
+
 
 app.post('/patient/qrcode', (req, res) => {
     const url = req.body.url
