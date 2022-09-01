@@ -27,6 +27,7 @@ const LoginPasswords = [
     }
 ]
 
+
 const basicDetails = [
     {
         id: "1",
@@ -83,6 +84,33 @@ const basicDetails = [
         phone: "898911111",
         gender: "Female",
         type: "Pharma"
+    }
+]
+
+const orders = [
+    {
+        id: "1",
+        medicineName: "Crocin",
+        quantity: "6",
+        patientName: "John",
+        address: "Dto-kadha 2nd floor",
+        phone: "1122334455"
+    },
+    {
+        id: "2",
+        medicineName: "Crocin",
+        quantity: "6",
+        patientName: "John",
+        address: "Dto-kadha 2nd floor",
+        phone: "1122334455"
+    },
+    {
+        id: "3",
+        medicineName: "Crocin",
+        quantity: "6",
+        patientName: "John",
+        address: "Dto-kadha 2nd floor",
+        phone: "1122334455"
     }
 ]
 
@@ -146,7 +174,20 @@ const appointments = [
 
 app.use(express.json())
 
+app.get('/orders', (req, res) => {
+    const objToSend = {
+        orders: []
+    }
+    orders.forEach(element => {
 
+        objToSend.orders.push(element)
+    })
+
+
+    res.status(200).send(JSON.stringify(objToSend))
+    console.log('good')
+
+})
 app.get('/', (req, res) => {
     const objToSend = {
         name: "VISHESH",
@@ -248,4 +289,4 @@ app.post('/patient/qrcode', (req, res) => {
 app.listen(process.env.PORT || 5000, () => {
 
 
-});
+})
