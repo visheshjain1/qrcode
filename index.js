@@ -8,20 +8,20 @@ const qrcode = require('qrcode')
 
 const LoginPasswords = [
     {
-        userName: "Patient",
-        password: "Patient@123",
+        userName: "1111111111",
+        password: "1234",
         type: "Patient",
         id: "1"
     },
     {
-        userName: "Doctor",
-        password: "Doctor@123",
+        userName: "2222222222",
+        password: "1234",
         type: "Doctor",
         id: "4"
     },
     {
-        userName: "Pharma",
-        password: "Pharma@123",
+        userName: "3333333333",
+        password: "1234",
         type: "Pharma",
         id: "7"
     }
