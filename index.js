@@ -236,8 +236,10 @@ app.post('/patient/qrcode', (req, res) => {
             console.log('Error while generating qrCode')
         }
         else {
-            console.log(src)
-            res.send(src)
+            const objToSend = {
+                source: src
+            }
+            res.status(200).send(JSON.stringify(objToSend))
         }
     })
 })
